@@ -13,13 +13,11 @@ function App() {
       <Navbar />
       <div className="main-content">
         <Routes>
-          {/* Дефолтный роут перенаправляет на Login */}
           <Route path="/" element={<Navigate to="/login" />} />
           
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
           
-          {/* Защищенные роуты страниц */}
           <Route path="/profile" element={<CandidateProfile />} />
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>

@@ -45,7 +45,6 @@ export default function Registration() {
 
 
   return (
-
     <div className="auth-page">
 
       <div className="auth-card">

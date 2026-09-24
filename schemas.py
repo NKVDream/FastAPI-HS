@@ -1,11 +1,10 @@
 from pydantic import BaseModel
 from typing import Optional
 
-# --- СХЕМЫ ПОЛЬЗОВАТЕЛЕЙ И АВТОРШАНИИ ---
 class UserCreate(BaseModel):
     username: str
     password: str
-    role: Optional[str] = "candidate" # Можно передать "admin" или "candidate"
+    role: Optional[str] = "candidate"
 
 class UserResponse(BaseModel):
     id: int
@@ -18,7 +17,6 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str
 
-# --- СХЕМЫ УВЕДОМЛЕНИЙ ---
 class NotificationResponse(BaseModel):
     id: int
     message: str
@@ -26,7 +24,6 @@ class NotificationResponse(BaseModel):
     class Config:
         from_attributes = True
 
-# --- СХЕМЫ ВАКАНСИЙ ---
 class VacancyCreate(BaseModel):
     title: str
     description: str = ""
@@ -43,7 +40,6 @@ class VacancyResponse(BaseModel):
     class Config:
         from_attributes = True
 
-# --- СХЕМЫ КАНДИДАТОВ ---
 class CandidateCreate(BaseModel):
     full_name: str
     email: str

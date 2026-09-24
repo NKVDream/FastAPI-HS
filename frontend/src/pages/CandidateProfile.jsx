@@ -73,7 +73,7 @@ export default function CandidateProfile() {
       <div className="section">
 
         <h3>
-          📄 Моя анкета резюме
+          Мое резюме
         </h3>
 
         {profile.candidate_info ? (

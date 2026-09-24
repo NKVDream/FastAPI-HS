@@ -90,7 +90,7 @@ export default function VacancyForm({ onCreated }) {
             type="text"
             value={title}
             onChange={e => setTitle(e.target.value)}
-            placeholder="Например: Социальный инженер"
+            placeholder="..."
             required
           />
         </div>

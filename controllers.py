@@ -9,11 +9,6 @@ import auth
 
 router = APIRouter()
 
-
-# =====================================================================
-# АВТОРИЗАЦИЯ И РЕГИСТРАЦИЯ
-# =====================================================================
-
 @router.post(
     "/auth/register",
     response_model=schemas.UserResponse,
@@ -85,11 +80,6 @@ def login(
         "token_type": "bearer"
     }
 
-
-# =====================================================================
-# ЛИЧНЫЙ КАБИНЕТ
-# =====================================================================
-
 @router.get(
     "/me/profile",
     tags=["Profile"]
@@ -97,10 +87,6 @@ def login(
 def get_my_profile(
     current_user: models.DBUser = Depends(auth.get_current_user)
 ):
-    """
-    Возвращает информацию о текущем пользователе
-    и его резюме кандидата.
-    """
 
     profile_data = {
         "id": current_user.id,
@@ -127,18 +113,10 @@ def get_my_notifications(
     db: Session = Depends(get_db),
     current_user: models.DBUser = Depends(auth.get_current_user)
 ):
-    """
-    Получить уведомления текущего пользователя.
-    """
 
     return db.query(models.DBNotification).filter(
         models.DBNotification.user_id == current_user.id
     ).all()
-
-
-# =====================================================================
-# РАБОТА С КАНДИДАТАМИ
-# =====================================================================
 
 @router.post(
     "/candidates",
@@ -150,12 +128,6 @@ def create_candidate(
     db: Session = Depends(get_db),
     current_user: models.DBUser = Depends(auth.get_current_user)
 ):
-    """
-    Создать резюме.
-
-    Если пользователь имеет роль candidate,
-    резюме автоматически привязывается к его аккаунту.
-    """
 
     existing = db.query(models.DBCandidate).filter(
         models.DBCandidate.email == candidate.email
@@ -171,7 +143,6 @@ def create_candidate(
         **candidate.model_dump()
     )
 
-    # Привязываем резюме к текущему пользователю
     if current_user.role == "candidate":
 
         if current_user.candidate_profile:
@@ -200,12 +171,6 @@ def update_candidate_status_or_data(
     db: Session = Depends(get_db),
     current_user: models.DBUser = Depends(auth.get_current_user)
 ):
-    """
-    Редактирование кандидата.
-
-    Если админ меняет статус на Interview,
-    кандидату отправляется уведомление.
-    """
 
     db_candidate = db.query(models.DBCandidate).filter(
         models.DBCandidate.id == candidate_id
@@ -219,12 +184,9 @@ def update_candidate_status_or_data(
 
     old_status = db_candidate.status
 
-    # Обновляем данные кандидата
     for key, value in updated_data.model_dump().items():
         setattr(db_candidate, key, value)
 
-    # Если статус изменился на Interview,
-    # создаём уведомление
     if (
         old_status != "Interview"
         and updated_data.status == "Interview"
@@ -233,7 +195,7 @@ def update_candidate_status_or_data(
         notification = models.DBNotification(
             user_id=db_candidate.user_id,
             message=(
-                "Вас выбрали по вакансии! "
+                "Вас выбрали по вакансии. "
                 "Мы готовим для вас собеседование."
             )
         )
@@ -255,11 +217,6 @@ def get_all_candidates(
     db: Session = Depends(get_db),
     current_user: models.DBUser = Depends(auth.get_current_user)
 ):
-    """
-    Получить всех кандидатов.
-
-    Доступно только администратору.
-    """
 
     if current_user.role != "admin":
         raise HTTPException(
@@ -268,11 +225,6 @@ def get_all_candidates(
         )
 
     return db.query(models.DBCandidate).all()
-
-
-# =====================================================================
-# РАБОТА С ВАКАНСИЯМИ
-# =====================================================================
 
 @router.post(
     "/vacancies",
@@ -284,11 +236,6 @@ def create_vacancy(
     db: Session = Depends(get_db),
     current_user: models.DBUser = Depends(auth.get_current_user)
 ):
-    """
-    Создание вакансии.
-
-    Только администратор может создавать вакансии.
-    """
 
     if current_user.role != "admin":
         raise HTTPException(
@@ -321,11 +268,6 @@ def get_all_vacancies(
 
     return db.query(models.DBVacancy).all()
 
-
-# =====================================================================
-# МНОГОКРИТЕРИАЛЬНЫЙ ПОИСК КАНДИДАТОВ
-# =====================================================================
-
 @router.get(
     "/search/match-candidates/{vacancy_id}",
     response_model=list[schemas.CandidateResponse],
@@ -347,19 +289,11 @@ def match_candidates_for_vacancy(
     6. Сортируем по количеству совпавших навыков.
     """
 
-    # ---------------------------------------------------------------
-    # 1. Проверяем роль
-    # ---------------------------------------------------------------
-
     if current_user.role != "admin":
         raise HTTPException(
             status_code=403,
             detail="Access denied"
         )
-
-    # ---------------------------------------------------------------
-    # 2. Получаем вакансию
-    # ---------------------------------------------------------------
 
     vacancy = db.query(models.DBVacancy).filter(
         models.DBVacancy.id == vacancy_id
@@ -371,28 +305,16 @@ def match_candidates_for_vacancy(
             detail="Vacancy not found"
         )
 
-    # ---------------------------------------------------------------
-    # 3. Получаем требуемые навыки вакансии
-    # ---------------------------------------------------------------
-
     vacancy_skills = {
         skill.strip().lower()
         for skill in vacancy.skills.split(",")
         if skill.strip()
     }
 
-    # ---------------------------------------------------------------
-    # 4. Получаем кандидатов с достаточным опытом
-    # ---------------------------------------------------------------
-
     candidates = db.query(models.DBCandidate).filter(
         models.DBCandidate.experience_years
         >= vacancy.required_experience
     ).all()
-
-    # ---------------------------------------------------------------
-    # 5. Считаем совпадения
-    # ---------------------------------------------------------------
 
     matched_candidates = []
 
@@ -404,16 +326,12 @@ def match_candidates_for_vacancy(
             if skill.strip()
         }
 
-        # Пересечение двух множеств:
-        # навыки вакансии ∩ навыки кандидата
         matched_skills = vacancy_skills.intersection(
             candidate_skills
         )
 
         matched_skills_count = len(matched_skills)
 
-        # Кандидат подходит, если есть
-        # хотя бы одно совпадение
         if matched_skills_count > 0:
 
             matched_candidates.append(
@@ -423,41 +341,10 @@ def match_candidates_for_vacancy(
                 )
             )
 
-    # ---------------------------------------------------------------
-    # 6. Сортируем НА СЕРВЕРЕ
-    # ---------------------------------------------------------------
-    #
-    # Чем больше совпавших навыков,
-    # тем выше кандидат.
-    #
-    # Например:
-    #
-    # Joe   -> 4 совпадения
-    # John  -> 3 совпадения
-    # Bob   -> 1 совпадение
-    #
-    # Именно в таком порядке они уйдут на frontend.
-    # ---------------------------------------------------------------
-
     matched_candidates.sort(
         key=lambda item: item[1],
         reverse=True
     )
-
-    # ---------------------------------------------------------------
-    # 7. Возвращаем только кандидатов
-    # ---------------------------------------------------------------
-    #
-    # response_model ожидает:
-    #
-    # list[schemas.CandidateResponse]
-    #
-    # Поэтому tuple:
-    #
-    # (candidate, matched_skills_count)
-    #
-    # здесь превращаем обратно в candidate.
-    # ---------------------------------------------------------------
 
     return [
         candidate

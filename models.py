@@ -2,20 +2,17 @@ from sqlalchemy import Column, Integer, String, Text, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from database import Base
 
-# 1. Таблица аккаунтов (для входа на сайт)
 class DBUser(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
-    role = Column(String, default="candidate", nullable=False)  # "candidate" или "admin"
+    role = Column(String, default="candidate", nullable=False)
 
-    # Связи: у пользователя есть профиль кандидата и список уведомлений
     candidate_profile = relationship("DBCandidate", back_populates="user", uselist=False)
     notifications = relationship("DBNotification", back_populates="user", cascade="all, delete-orphan")
 
-# 2. Таблица вакансий
 class DBVacancy(Base):
     __tablename__ = "vacancies"
 
@@ -26,7 +23,6 @@ class DBVacancy(Base):
     skills = Column(String)
     description = Column(Text)
 
-# 3. Таблица данных кандидатов (связана с аккаунтом)
 class DBCandidate(Base):
     __tablename__ = "candidates"
 
@@ -38,17 +34,14 @@ class DBCandidate(Base):
     skills = Column(String)
     status = Column(String, default="New")
 
-    # Обратная связь с аккаунтом
     user = relationship("DBUser", back_populates="candidate_profile")
 
-# 4. Таблица уведомлений для личного кабинета
 class DBNotification(Base):
     __tablename__ = "notifications"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False) # Кому предназначено
-    message = Column(String, nullable=False)                          # Текст уведомления
-    is_read = Column(Boolean, default=False)                          # Прочитано или нет
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    message = Column(String, nullable=False)
+    is_read = Column(Boolean, default=False)
 
-    # Обратная связь с аккаунтом
     user = relationship("DBUser", back_populates="notifications")

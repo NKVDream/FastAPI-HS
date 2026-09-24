@@ -13,7 +13,7 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <div className="nav-logo">HR-Portal</div>
+      <div className="nav-logo">World Goverment</div>
       <div className="nav-links">
         {!token ? (
           <>

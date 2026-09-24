@@ -14,7 +14,6 @@ export default function Login() {
     setError('');
 
     try {
-      // Авторизация
       const response = await axios.post(
         'http://127.0.0.1:8000/auth/login',
         {
@@ -25,10 +24,8 @@ export default function Login() {
 
       const accessToken = response.data.access_token;
 
-      // Сохраняем токен
       localStorage.setItem('token', accessToken);
 
-      // Получаем информацию о текущем пользователе
       const profileRes = await axios.get(
         'http://127.0.0.1:8000/me/profile',
         {
@@ -38,10 +35,8 @@ export default function Login() {
         }
       );
 
-      // Сохраняем роль
       localStorage.setItem('role', profileRes.data.role);
 
-      // Перенаправление
       if (profileRes.data.role === 'admin') {
         navigate('/admin');
       } else {

@@ -50,7 +50,6 @@ export default function CandidateTable({
     .map(calculateCandidate)
     .sort((a, b) => {
 
-      // 1. Сначала количество совпавших обязательных навыков
       if (b.matchedSkills.length !== a.matchedSkills.length) {
         return (
           b.matchedSkills.length -
@@ -58,7 +57,6 @@ export default function CandidateTable({
         );
       }
 
-      // 2. Потом количество дополнительных навыков
       if (b.extraSkills.length !== a.extraSkills.length) {
         return (
           b.extraSkills.length -
@@ -66,7 +64,6 @@ export default function CandidateTable({
         );
       }
 
-      // 3. Потом опыт
       return (
         b.experience_years -
         a.experience_years

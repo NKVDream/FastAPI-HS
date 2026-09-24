@@ -57,7 +57,7 @@ export default function ResumeForm({
         config
       );
 
-      alert('Резюме успешно опубликовано!');
+      alert('Резюме успешно опубликовано');
 
       setFullName('');
       setEmail('');
