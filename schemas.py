@@ -29,13 +29,17 @@ class NotificationResponse(BaseModel):
 # --- СХЕМЫ ВАКАНСИЙ ---
 class VacancyCreate(BaseModel):
     title: str
-    department: Optional[str] = None
-    required_experience: int = 0
+    description: str = ""
+    required_experience: int
     skills: str
-    description: Optional[str] = None
 
-class VacancyResponse(VacancyCreate):
+class VacancyResponse(BaseModel):
     id: int
+    title: str
+    description: str
+    required_experience: int
+    skills: str
+
     class Config:
         from_attributes = True
 
@@ -52,3 +56,14 @@ class CandidateResponse(CandidateCreate):
     user_id: Optional[int] = None
     class Config:
         from_attributes = True
+
+class CandidateMatchResponse(BaseModel):
+    id: int
+    full_name: str
+    email: str
+    experience_years: int
+    skills: str
+    status: str
+    matched_skills: list[str]
+    match_count: int
+    total_required_skills: int

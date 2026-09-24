@@ -1,42 +1,714 @@
+/* =========================================
+   GLOBAL
+========================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: #f4f8fa;
+  color: #0b1f33;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.navbar {
+  height: 72px;
+  padding: 0 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #ffffff;
+  border-bottom: 1px solid #dce7ec;
+}
+
+.nav-logo {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #0b1f33;
+}
+
+.nav-logo::after {
+  content: "";
+
+  display: inline-block;
+
+  width: 7px;
+  height: 7px;
+
+  margin-left: 7px;
+
+  border-radius: 50%;
+  background: #00a6c7;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-size: 14px;
+  color: #405466;
+
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #00a6c7;
+}
+
+.btn-logout-nav {
+  border: none;
+  background: transparent;
+
+  font-size: 14px;
+  color: #405466;
+
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+}
+
+.btn-logout-nav:hover {
+  color: #00a6c7;
+}
+
+
+/* =========================================
+   MAIN
+========================================= */
+
+.main-content {
+  width: 100%;
+  min-height: calc(100vh - 72px);
+  margin: 0;
+  padding: 0;
+}
+
+
+/* =========================================
+   AUTH PAGE
+========================================= */
+
+.auth-page {
+  width: 100%;
+  min-height: calc(100vh - 72px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 60px 20px;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-page::before {
+  content: "";
+
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  border: 1px solid rgba(0, 166, 199, 0.15);
+  border-radius: 50%;
+
+  top: -220px;
+  right: -120px;
+}
+
+.auth-page::after {
+  content: "";
+
+  position: absolute;
+
+  width: 300px;
+  height: 300px;
+
+  border: 1px solid rgba(11, 31, 51, 0.08);
+  border-radius: 50%;
+
+  bottom: -180px;
+  left: -100px;
+}
+
+
+/* =========================================
+   AUTH CARD
+========================================= */
+
+.auth-card {
+  width: 100%;
+  max-width: 430px;
+
+  background: #ffffff;
+  border: 1px solid #dce7ec;
+
+  padding: 42px;
+
+  position: relative;
+  z-index: 2;
+
+  box-shadow:
+    0 15px 45px rgba(11, 31, 51, 0.08);
+}
+
+.auth-card::before {
+  content: "";
+
+  display: block;
+
+  width: 48px;
+  height: 4px;
+
+  background: #00a6c7;
+
+  margin-bottom: 30px;
+}
+
+
+/* =========================================
+   AUTH HEADER
+========================================= */
+
+.auth-header {
+  margin-bottom: 32px;
+}
+
+.auth-label {
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+
+  color: #00a6c7;
+
+  margin-bottom: 10px;
+}
+
+.auth-header h2 {
+  margin: 0;
+
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 600;
+
+  color: #0b1f33;
+}
+
+.auth-description {
+  margin-top: 10px;
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  color: #708292;
+}
+
+
+/* =========================================
+   AUTH FORM
+========================================= */
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-form .form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #30485c;
+}
+
+
+/* =========================================
+   AUTH INPUTS
+========================================= */
+
+.auth-form .form-group input,
+.auth-form .form-group select {
+  width: 100%;
+  height: 48px;
+
+  padding: 0 14px;
+
+  border: 1px solid #cbd9e1;
+  background: #ffffff;
+
+  color: #0b1f33;
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.auth-form .form-group input:focus,
+.auth-form .form-group select:focus {
+  border-color: #00a6c7;
+
+  box-shadow:
+    0 0 0 3px rgba(0, 166, 199, 0.12);
+}
+
+.auth-form .form-group input::placeholder {
+  color: #9aaab6;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.btn-submit {
+  width: 100%;
+  height: 50px;
+
+  margin-top: 6px;
+
+  border: none;
+  background: #0b1f33;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btn-submit:hover {
+  background: #00a6c7;
+}
+
+.btn-submit:active {
+  transform: translateY(1px);
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.error-text {
+  margin: -5px 0 0;
+
+  padding: 11px 13px;
+
+  border-left: 3px solid #d9534f;
+  background: #fff5f4;
+
+  color: #a33a36;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   SWITCH LOGIN / REGISTER
+========================================= */
+
+.switch-text {
+  margin: 26px 0 0;
+
   text-align: center;
+
+  font-size: 13px;
+  color: #708292;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.switch-text a {
+  color: #00a6c7;
+  text-decoration: none;
+  font-weight: 600;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.switch-text a:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================
+   DASHBOARD CONTAINER
+========================================= */
+
+.container {
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+  padding: 50px 30px;
+}
+
+.container h2 {
+  font-size: 30px;
+  font-weight: 600;
+
+  color: #0b1f33;
+}
+
+.section {
+  background: #ffffff;
+
+  border: 1px solid #dce7ec;
+
+  padding: 30px;
+
+  margin-top: 25px;
+}
+
+.section h3 {
+  margin-top: 0;
+
+  color: #0b1f33;
+  font-size: 18px;
+}
+
+
+/* =========================================
+   NOTIFICATIONS
+========================================= */
+
+.notification-card {
+  padding: 14px 16px;
+
+  margin-top: 10px;
+
+  background: #f1fafc;
+
+  border-left: 3px solid #00a6c7;
+
+  color: #30485c;
+
+  font-size: 14px;
+}
+
+
+/* =========================================
+   RESUME
+========================================= */
+
+.resume-display {
+  display: grid;
+  gap: 12px;
+}
+
+.resume-display p {
+  margin: 0;
+
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid #edf2f5;
+
+  font-size: 14px;
+}
+
+.status-badge {
+  display: inline-block;
+
+  padding: 4px 9px;
+
+  background: #e6f7fa;
+  color: #007d98;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* =========================================
+   VACANCY FORM
+========================================= */
+
+.vacancy-form {
+  width: 100%;
+}
+
+.vacancy-form h2 {
+  margin-bottom: 28px;
+}
+
+
+/* =========================================
+   VACANCY FORM GROUP
+========================================= */
+
+.vacancy-form .form-group {
+  margin-bottom: 24px;
+}
+
+.vacancy-form .form-group > label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-weight: 600;
+  color: #29445f;
+}
+
+
+/* =========================================
+   VACANCY INPUTS
+========================================= */
+
+.vacancy-form input[type="text"],
+.vacancy-form input[type="number"] {
+  width: 100%;
+  height: 48px;
+
+  padding: 0 16px;
+
+  border: 1px solid #cbd9e3;
+
+  background: #ffffff;
+
+  font-size: 16px;
+  color: #10283f;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.vacancy-form input[type="text"]:focus,
+.vacancy-form input[type="number"]:focus {
+  border-color: #00a6c7;
+
+  box-shadow:
+    0 0 0 3px rgba(0, 166, 199, 0.10);
+}
+
+
+/* =========================================
+   SKILLS GRID
+========================================= */
+
+.skills-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  column-gap: 24px;
+  row-gap: 8px;
+
+  margin-top: 12px;
+}
+
+
+/* =========================================
+   SKILL OPTION
+========================================= */
+
+.skill-option {
+  width: 100%;
+  min-height: 42px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 8px 10px;
+
+  cursor: pointer;
+
+  border: 1px solid transparent;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.skill-option:hover {
+  background: #eef7fa;
+  border-color: #d5e8ee;
+}
+
+
+/* =========================================
+   SKILL CHECKBOX
+========================================= */
+
+.skill-checkbox {
+  appearance: auto;
+
+  width: 16px !important;
+  height: 16px !important;
+
+  min-width: 16px;
+  max-width: 16px;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  accent-color: #00a6c7;
+
+  cursor: pointer;
+
+  flex: 0 0 16px;
+}
+
+
+/* =========================================
+   SKILL TEXT
+========================================= */
+
+.skill-option span {
+  display: block;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  color: #29445f;
+
+  line-height: 1.25;
+}
+
+
+/* =========================================
+   SEARCH PANEL
+========================================= */
+
+.search-panel {
+  margin-bottom: 30px;
+}
+
+
+/* =========================================
+   CANDIDATE TABLE
+========================================= */
+
+.candidates-table {
+  width: 100%;
+
+  margin-top: 25px;
+
+  border-collapse: collapse;
+
+  background: #ffffff;
+
+  border: 1px solid #dce7ec;
+}
+
+.candidates-table th {
+  padding: 14px 16px;
+
+  background: #f1f6f8;
+
+  color: #29445f;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-align: left;
+
+  border-bottom: 1px solid #dce7ec;
+}
+
+.candidates-table td {
+  padding: 14px 16px;
+
+  color: #405466;
+
+  font-size: 14px;
+
+  border-bottom: 1px solid #edf2f5;
+}
+
+.candidates-table tr:hover td {
+  background: #f8fbfc;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  to {
-    transform: rotate(360deg);
+}
+
+@media (max-width: 600px) {
+
+  .navbar {
+    padding: 0 20px;
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .nav-links {
+    gap: 14px;
   }
-}
 
-.card {
-  padding: 2em;
-}
+  .auth-card {
+    padding: 30px 24px;
+  }
 
-.read-the-docs {
-  color: #888;
+  .auth-header h2 {
+    font-size: 26px;
+  }
+
+  .container {
+    padding: 30px 20px;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
 }
